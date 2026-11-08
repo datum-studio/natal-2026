@@ -7,7 +7,7 @@
 <title>Natal com Afeto · Calendário de postagens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bordo:#891642; --vinho:#542536; --bege:#DBBA81; --off:#F6F0E7;
@@ -70,7 +70,8 @@
   .check input{width:20px;height:20px;accent-color:var(--bordo)}
   .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,40px);opacity:0;background:var(--vinho);color:var(--off);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:500;transition:.25s;pointer-events:none;z-index:9}
   .toast.on{transform:translate(-50%,0);opacity:1}
-  footer{text-align:center;font-size:11px;color:var(--suave);padding:10px 20px 40px}
+  .prazo{text-align:center;font-size:11px;color:var(--suave);padding:0 20px 8px}
+  footer{max-width:560px;margin:0 auto;padding:20px 20px calc(28px + env(safe-area-inset-bottom));font-family:'Geist',system-ui,sans-serif;border-top:1px solid #e6dccd}
 </style>
 </head>
 <body>
@@ -88,7 +89,19 @@
   <button class="chip" data-f="reel">Reels</button>
 </nav>
 <main id="lista"></main>
-<footer>Encomendas até 20/12/2026 · 12h</footer>
+<div class="prazo">Encomendas até 20/12/2026 · 12h</div>
+<footer>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:12px;">
+    <div style="font-size:0.88rem;color:var(--texto);line-height:1.4;white-space:nowrap;">
+      <span style="font-weight:400;">Developed by </span><span style="font-weight:600;">Datum Studio</span>
+    </div>
+    <div style="text-align:right;color:var(--suave);font-size:0.72rem;line-height:1.7;white-space:nowrap;">
+      <div style="font-weight:500;">Calendário de Postagens</div>
+      <div style="opacity:0.8;">v1.0.0</div>
+      <div>© <span id="footer-ano">2026</span></div>
+    </div>
+  </div>
+</footer>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -256,6 +269,7 @@ function atualizarProgresso(){
 }
 
 render();
+document.getElementById('footer-ano').textContent = new Date().getFullYear();
 // rola até a próxima publicação
 const alvo=document.querySelector('.card.hoje');
 if(alvo && alvo!==document.querySelector('.card')) setTimeout(()=>alvo.scrollIntoView({behavior:'smooth',block:'start'}),300);
