@@ -1,0 +1,17 @@
+CALENDÁRIO NATAL COM AFETO, COMO ATUALIZAR
+
+1) Suba esta pasta num repositório do GitHub e ative o GitHub Pages.
+   Mande o link para a sua sócia e peça para ela "Adicionar à tela de início".
+
+2) Coloque as artes na pasta "artes/" com o nome DIA-MÊS-NÚMERO:
+     Carrossel do dia 09/11, 5 páginas:  09-11-1.jpg  09-11-2.jpg ... 09-11-5.jpg
+     Stories do dia 10/11, 3 telas:      10-11-1.jpg  10-11-2.jpg  10-11-3.jpg
+     Post único do dia 25/11:            25-11-1.jpg
+     Reel do dia 19/11:                  19-11-capa.jpg  e  19-11-video.mp4
+   Pode ser .jpg ou .png. A página encontra sozinha. O que ainda não subiu aparece como "em produção".
+
+3) Pronto. Não precisa mexer no código. Ela abre, toca em "Salvar artes"
+   (no celular abre o menu: Salvar imagens / Instagram) e depois em "Copiar legenda".
+
+Dias da campanha: 09/11, 10/11, 12/11, 14/11, 17/11, 19/11, 22/11, 25/11, 28/11,
+01/12, 04/12, 07/12, 10/12, 13/12, 16/12, 18/12, 20/12.

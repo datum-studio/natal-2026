@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#891642">
+<title>Natal com Afeto · Calendário de postagens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordo:#891642; --vinho:#542536; --bege:#DBBA81; --off:#F6F0E7;
+    --dourado:#C6A36A; --branco:#fff; --texto:#3a2430; --suave:#8a7380;
+    --serif:'Cormorant Garamond',Georgia,serif; --sans:'Montserrat',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--off);color:var(--texto);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+  header{background:var(--bordo);color:var(--off);padding:28px 20px 20px;padding-top:calc(28px + env(safe-area-inset-top))}
+  .marca{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--bege)}
+  h1{font-family:var(--serif);font-weight:600;font-size:38px;line-height:1.05;margin:6px 0 4px}
+  .sub{font-size:13px;opacity:.85}
+  .progresso{margin-top:16px;display:flex;align-items:center;gap:10px;font-size:12px}
+  .barra{flex:1;height:6px;background:rgba(255,255,255,.18);border-radius:3px;overflow:hidden}
+  .barra i{display:block;height:100%;width:0;background:var(--bege);transition:width .3s}
+  nav{position:sticky;top:0;z-index:5;background:var(--off);padding:12px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #e6dccd;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  .chip{flex:none;border:1px solid var(--bege);background:transparent;color:var(--vinho);font:500 13px var(--sans);padding:7px 14px;border-radius:999px}
+  .chip.on{background:var(--vinho);border-color:var(--vinho);color:var(--off)}
+  main{max-width:560px;margin:0 auto;padding:16px 14px 80px}
+  .mes{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--bordo);margin:22px 4px 10px}
+  .card{scroll-margin-top:64px;background:var(--branco);border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 3px rgba(84,37,54,.08)}
+  .card.feito{opacity:.55}
+  .card.hoje{outline:2px solid var(--dourado)}
+  .topo{display:flex;gap:14px;align-items:center;padding:16px 16px 10px}
+  .data{text-align:center;min-width:52px}
+  .data b{display:block;font-family:var(--serif);font-size:34px;line-height:1;color:var(--bordo)}
+  .data span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--suave)}
+  .info{flex:1;min-width:0}
+  .tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--off);color:var(--vinho)}
+  .tag.stories{background:#f1e3ea;color:var(--bordo)}
+  .tag.reel{background:var(--vinho);color:var(--off)}
+  .flag{font-size:10px;font-weight:600;color:var(--dourado);letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+  .papel{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.2;margin-top:4px;color:var(--vinho)}
+  .det{font-size:12px;color:var(--suave)}
+  .artes{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 12px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .artes::-webkit-scrollbar{display:none}
+  .peca{flex:none;scroll-snap-align:start;position:relative;width:62%;border-radius:10px;overflow:hidden;background:var(--off)}
+  .peca.v{width:44%}
+  .peca .ratio{aspect-ratio:4/5}
+  .peca.v .ratio{aspect-ratio:9/16}
+  .peca img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .peca .vazio{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px dashed var(--bege);border-radius:10px;color:var(--suave);font-size:12px;text-align:center;padding:10px}
+  .peca .vazio b{font-family:var(--serif);font-size:26px;color:var(--bege)}
+  .peca .n{z-index:1;position:absolute;top:6px;left:6px;background:rgba(84,37,54,.75);color:#fff;font-size:11px;font-weight:600;padding:2px 7px;border-radius:999px}
+  .legenda{margin:0 16px 12px;padding:12px 14px;background:var(--off);border-radius:10px;font-size:14px;white-space:pre-wrap;max-height:7.5em;overflow:hidden;position:relative}
+  .legenda.aberta{max-height:none}
+  .legenda:not(.aberta)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2.2em;background:linear-gradient(transparent,var(--off))}
+  .mais{display:block;margin:-6px 16px 10px;background:none;border:0;color:var(--bordo);font:600 12px var(--sans)}
+  details{margin:0 16px 12px;font-size:13px;color:var(--texto)}
+  summary{color:var(--bordo);font-weight:600;font-size:12px;cursor:pointer}
+  details p{margin-top:6px;padding:10px 12px;background:var(--off);border-radius:8px}
+  .semleg{margin:0 16px 12px;font-size:12px;color:var(--suave)}
+  .acoes{display:flex;gap:8px;padding:0 16px 16px;flex-wrap:wrap}
+  .btn{flex:1 1 40%;border:0;border-radius:10px;padding:13px 10px;font:600 14px var(--sans);display:flex;align-items:center;justify-content:center;gap:6px}
+  .btn.pri{background:var(--bordo);color:#fff}
+  .btn.sec{background:var(--off);color:var(--vinho);border:1px solid var(--bege)}
+  .btn:disabled{opacity:.4}
+  .check{flex:1 1 100%;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--suave);padding:6px 0 0}
+  .check input{width:20px;height:20px;accent-color:var(--bordo)}
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,40px);opacity:0;background:var(--vinho);color:var(--off);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:500;transition:.25s;pointer-events:none;z-index:9}
+  .toast.on{transform:translate(-50%,0);opacity:1}
+  footer{text-align:center;font-size:11px;color:var(--suave);padding:10px 20px 40px}
+</style>
+</head>
+<body>
+<header>
+  <div class="marca">Café &amp; Tal · Coleção 2026</div>
+  <h1>Natal com Afeto</h1>
+  <div class="sub">Calendário de postagens. Baixe as artes e copie as legendas.</div>
+  <div class="progresso"><div class="barra"><i id="barra"></i></div><span id="contador"></span></div>
+</header>
+<nav id="filtros">
+  <button class="chip on" data-f="todos">Todos</button>
+  <button class="chip" data-f="pendentes">Falta postar</button>
+  <button class="chip" data-f="feed">Feed</button>
+  <button class="chip" data-f="stories">Stories</button>
+  <button class="chip" data-f="reel">Reels</button>
+</nav>
+<main id="lista"></main>
+<footer>Encomendas até 20/12/2026 · 12h</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const POSTS = [{"data": "2026-11-09", "dia": "Segunda", "formato": "FEED", "detalhe": "Carrossel 4:5, 1080×1350 px por página", "tipo": "carrossel", "papel": "Lançamento e abertura de pedidos", "roteiro": "Página 1: Natal com Afeto — Coleção 2026. Páginas seguintes: minis corporativos; tamanho 100; tamanho 250; como encomendar. Manter texto enxuto e preços legíveis. Usar as páginas de produto aprovadas como referência.", "legenda": "O Natal tem um jeito especial de chegar: pelos encontros, pelos presentes e pelos sabores que fazem a gente lembrar de quem ama. Nossa coleção Natal com Afeto 2026 está no ar! Panetones artesanais para presentear, compartilhar e deixar a temporada ainda mais gostosa. As encomendas já estão abertas.\n\nDeslize para conhecer o cardápio e peça pelo direct ou WhatsApp.", "pecas": 5}, {"data": "2026-11-10", "dia": "Terça", "formato": "STORIES", "detalhe": "sequência 3 telas, 1080×1920 px cada", "tipo": "stories", "papel": "Converter o interesse gerado pelo lançamento", "roteiro": "1: recorte do cardápio com 'A coleção está aberta'. 2: enquete 'Qual sabor é a sua cara?'. 3: instrução de pedido com direct/WhatsApp.", "legenda": null, "pecas": 3}, {"data": "2026-11-12", "dia": "Quinta", "formato": "STORIES", "detalhe": "2 telas, 1080×1920 px", "tipo": "stories", "papel": "Ajudar a escolher o tamanho", "roteiro": "Mostrar tamanho 100 g → peso final aproximado 190 g; tamanho 250 g → peso final aproximado 490 g. Não usar '190 g' como tamanho de referência.", "legenda": null, "pecas": 2}, {"data": "2026-11-14", "dia": "Sábado", "formato": "FEED", "detalhe": "Carrossel 6 páginas, 1080×1350 px", "tipo": "carrossel", "papel": "Apresentar os sabores e preços", "roteiro": "1 capa 'Um sabor para cada jeito de celebrar'. 2 Café. 3 Brigadeiro. 4 Caramelo Salgado. 5 Morango Cravejado. 6 Doce de Leite. Informar preço de cada um e tamanho 100 g / peso final aprox. 190 g.", "legenda": "Tem quem escolha Café, quem não resista ao Brigadeiro e quem já tenha um favorito entre Caramelo Salgado, Morango Cravejado e Doce de Leite. Qual combina com o seu Natal? Nossa linha tamanho 100 g tem peso final aproximado de 190 g e foi pensada para presentear ou dividir um momento especial.\n\nComente seu sabor favorito e faça seu pedido pelo direct/WhatsApp.", "pecas": 6}, {"data": "2026-11-17", "dia": "Terça", "formato": "STORIES", "detalhe": "sequência 3 telas, 1080×1920 px", "tipo": "stories", "papel": "Gerar desejo com detalhes", "roteiro": "Mostrar detalhes reais de 2 ou 3 sabores; encerrar com pergunta 'qual você provaria primeiro?'.", "legenda": null, "pecas": 3}, {"data": "2026-11-19", "dia": "Quinta", "formato": "FEED", "detalhe": "Reel 9:16, 1080×1920 px (capa 1080×1350)", "tipo": "reel", "papel": "Valorizar o artesanal", "roteiro": "Roteiro: 0–2s produto em destaque; 2–5s detalhe da cobertura; 5–8s corte/textura; 8–11s embalagem; 11–13s coleção e encomendas abertas. Usar apenas filmagens reais.", "legenda": "Mais do que um panetone, um presente feito com cuidado em cada detalhe. A coleção Natal com Afeto foi pensada para compartilhar, agradecer e surpreender. Encomendas abertas.\n\nGaranta o seu com antecedência.", "pecas": 1}, {"data": "2026-11-22", "dia": "Domingo", "formato": "STORIES", "detalhe": "2 telas, 1080×1920 px", "tipo": "stories", "papel": "Interação leve no domingo", "roteiro": "1: imagem de produto e pergunta 'Qual sabor não pode faltar?'. 2: repostar respostas ou direcionar ao cardápio.", "legenda": null, "pecas": 2}, {"data": "2026-11-25", "dia": "Quarta", "formato": "FEED", "detalhe": "Post único 4:5, 1080×1350 px", "tipo": "post", "papel": "Posicionar como presente", "roteiro": "Texto na arte: 'Um presente que tem gosto de carinho'. Mostrar panetone e embalagem reais. Legenda inclui família, equipe, clientes e anfitriões.", "legenda": "Tem presentes que encantam antes mesmo da primeira mordida. Nossos panetones são uma opção especial para presentear a família, agradecer alguém querido, surpreender clientes ou levar um carinho para a confraternização.\n\nConsulte as opções e encomende pelo direct/WhatsApp.", "pecas": 1}, {"data": "2026-11-28", "dia": "Sábado", "formato": "STORIES", "detalhe": "sequência 3 telas, 1080×1920 px", "tipo": "stories", "papel": "Tirar dúvidas e facilitar compra", "roteiro": "1: como encomendar. 2: pagamento (50% na confirmação, restante na entrega; cartão +5%). 3: retirada ou entrega com taxa combinada.", "legenda": null, "pecas": 3}, {"data": "2026-12-01", "dia": "Terça", "formato": "FEED", "detalhe": "Carrossel 4 páginas, 1080×1350 px", "tipo": "carrossel", "papel": "Comparar tamanhos e ocasiões", "roteiro": "1 capa 'Qual tamanho combina com seu momento?'. 2 tamanho 100 g / final aprox. 190 g. 3 tamanho 250 g / final aprox. 490 g. 4 tabela de sabores e preços.", "legenda": "Um presente pequeno ou uma mesa para compartilhar? A coleção tem duas opções de tamanho, com sabores escolhidos para diferentes momentos. Deslize para comparar e encontrar o seu.\n\nSalve este guia e peça o seu.", "pecas": 4}, {"data": "2026-12-04", "dia": "Sexta", "formato": "STORIES", "detalhe": "3 telas, 1080×1920 px", "tipo": "stories", "papel": "Reativar interesse nos sabores", "roteiro": "1: Café x Brigadeiro. 2: Caramelo Salgado x Doce de Leite. 3: Morango Cravejado + CTA para pedido.", "legenda": null, "pecas": 3}, {"data": "2026-12-07", "dia": "Segunda", "formato": "FEED", "detalhe": "Reel 9:16, 1080×1920 px", "tipo": "reel", "papel": "Humanizar e mostrar produção", "roteiro": "Filmar preparação/finalização reais. Não gerar bastidores por IA nem mostrar procedimentos que não correspondam à produção.", "legenda": "Por aqui, o Natal é feito em etapas: preparo, cuidado, finalização e aquele detalhe que faz diferença. Cada encomenda recebe atenção para chegar até você com o carinho que a data merece.\n\nAs encomendas seguem abertas. Fale com a gente.", "pecas": 1}, {"data": "2026-12-10", "dia": "Quinta", "formato": "STORIES", "detalhe": "2 telas, 1080×1920 px", "tipo": "stories", "papel": "Lembrete de planejamento", "roteiro": "1: 'Vai presentear neste Natal?' 2: 'Antecipe sua encomenda' + cardápio e canal de contato.", "legenda": null, "pecas": 2}, {"data": "2026-12-13", "dia": "Domingo", "formato": "FEED", "detalhe": "Post único 4:5, 1080×1350 px", "tipo": "post", "papel": "Abrir reta final de vendas", "roteiro": "Texto principal na arte: 'Última semana para encomendar'. Data limite: 20/12/2026, até 12h.", "legenda": "O Natal está chegando e nossa agenda de produção também precisa se organizar. Se você quer garantir os panetones da coleção Natal com Afeto, este é o momento de fazer seu pedido. Receberemos encomendas até 20/12/2026, ao meio-dia, ou enquanto houver disponibilidade de produção.\n\nFaça sua encomenda pelo direct/WhatsApp.", "pecas": 1}, {"data": "2026-12-16", "dia": "Quarta", "formato": "STORIES", "detalhe": "3 telas, 1080×1920 px", "tipo": "stories", "papel": "Converter indecisos", "roteiro": "1: seleção de sabores. 2: lembrete de tamanhos/preços ou link para cardápio. 3: prazo 20/12 às 12h.", "legenda": null, "pecas": 3}, {"data": "2026-12-18", "dia": "Sexta", "formato": "FEED", "detalhe": "Reel 9:16, 1080×1920 px (capa 1080×1350)", "tipo": "reel", "papel": "Último impulso de vendas", "roteiro": "Reel 10–12s: produtos em sequência, embalagens, sabores e prazo final. Usar disponibilidade confirmada.", "legenda": "Últimos dias para garantir os sabores da coleção Natal com Afeto. Se ainda falta escolher o presente ou o panetone da sua celebração, fale com a gente e consulte a disponibilidade. Encomendas até domingo, 20/12, ao meio-dia.\n\nPeça agora pelo direct/WhatsApp.", "pecas": 1}, {"data": "2026-12-20", "dia": "Domingo", "formato": "STORIES", "detalhe": "2 telas, 1080×1920 px", "tipo": "stories", "papel": "Encerrar encomendas", "roteiro": "Publicar pela manhã: último dia. Reforçar horário limite 12h. Atualizar caso a produção encerre antes.", "legenda": null, "pecas": 2}];
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const TIPO_NOME = {carrossel:'Carrossel',post:'Post',stories:'Stories',reel:'Reel'};
+const arquivos = {}; // id -> [File|null]
+
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+};
+let feitos = store.get('natal-feitos') || {};
+
+function hojeISO(){ const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+function prefixo(p){ const [a,m,d]=p.data.split('-'); return `${d}-${m}`; }
+function nomesPeca(p,i){
+  const base='artes/'+prefixo(p);
+  if(p.tipo==='reel') return [base+'-capa.jpg', base+'-capa.png'];
+  return [`${base}-${i}.jpg`, `${base}-${i}.png`];
+}
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2200); }
+
+function render(){
+  const lista=document.getElementById('lista'); lista.innerHTML='';
+  const hoje=hojeISO();
+  const proximo=(POSTS.find(p=>p.data>=hoje)||{}).data;
+  let mesAtual='';
+  POSTS.forEach((p,idx)=>{
+    const id=p.data;
+    const [a,m,d]=p.data.split('-');
+    const mes=MESES[+m-1];
+    if(mes!==mesAtual){ mesAtual=mes; const h=document.createElement('h2'); h.className='mes'; h.textContent=mes[0].toUpperCase()+mes.slice(1); h.dataset.mes=mes; lista.appendChild(h); }
+    const vertical = p.tipo==='stories';
+    const card=document.createElement('article');
+    card.className='card'+(feitos[id]?' feito':'')+(id===proximo?' hoje':'');
+    card.id='p-'+id;
+    card.dataset.tipo=p.tipo;
+    const flag = id===hoje ? '<span class="flag">● Hoje</span>' : (id===proximo ? '<span class="flag">● Próximo</span>' : '');
+    let pecas='';
+    for(let i=1;i<=p.pecas;i++){
+      pecas+=`<div class="peca${vertical?' v':''}" data-i="${i}"><div class="ratio"></div>
+        <div class="vazio"><b>${p.tipo==='reel'?'▶':i}</b>${p.tipo==='reel'?'Capa do Reel':(vertical?'Tela '+i:'Página '+i)}<br>em produção</div>
+        ${p.pecas>1?`<span class="n">${i}/${p.pecas}</span>`:''}</div>`;
+    }
+    const leg = p.legenda
+      ? `<div class="legenda">${esc(p.legenda)}</div><button class="mais">Ver legenda inteira</button>`
+      : `<div class="semleg">Stories não levam legenda. Os textos já estão nas artes.</div>`;
+    card.innerHTML=`
+      <div class="topo">
+        <div class="data"><b>${d}</b><span>${p.dia.slice(0,3)}</span></div>
+        <div class="info">
+          <span class="tag ${p.tipo}">${TIPO_NOME[p.tipo]}</span>${flag}
+          <div class="papel">${esc(p.papel)}</div>
+          <div class="det">${esc(p.detalhe)}</div>
+        </div>
+      </div>
+      <div class="artes">${pecas}</div>
+      ${leg}
+      <details><summary>O que tem em cada ${vertical?'tela':'página'}</summary><p>${esc(p.roteiro)}</p></details>
+      <div class="acoes">
+        <button class="btn pri" data-a="salvar" disabled>⬇ ${p.tipo==='reel'?'Salvar capa':'Salvar artes'}</button>
+        ${p.legenda?'<button class="btn sec" data-a="copiar">📋 Copiar legenda</button>':''}
+        ${p.tipo==='reel'?`<a class="btn sec" data-a="video" href="artes/${prefixo(p)}-video.mp4" download style="text-decoration:none">🎬 Baixar vídeo</a>`:''}
+        <label class="check"><input type="checkbox" ${feitos[id]?'checked':''}> Já postei</label>
+      </div>`;
+    lista.appendChild(card);
+    arquivos[id]=new Array(p.pecas).fill(null);
+    card.querySelectorAll('.peca').forEach(el=>carregarPeca(p,el,card));
+    ligar(card,p);
+  });
+  aplicarFiltro(); atualizarProgresso();
+}
+
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function carregarPeca(p,el,card){
+  const i=+el.dataset.i; const nomes=nomesPeca(p,i); let k=0;
+  const tentar=()=>{
+    if(k>=nomes.length) return;
+    const url=nomes[k++]+'?v='+Date.now().toString().slice(0,-5);
+    const img=new Image();
+    img.onload=()=>{
+      img.alt=`${p.papel} ${i}`;
+      el.querySelector('.vazio').remove();
+      el.appendChild(img);
+      img.addEventListener('click',()=>window.open(img.src,'_blank'));
+      // pré-carrega o arquivo para o compartilhamento ser instantâneo
+      fetch(url).then(r=>r.blob()).then(b=>{
+        const ext=b.type.includes('png')?'png':'jpg';
+        arquivos[p.data][i-1]=new File([b],`natal-${prefixo(p)}-${i}.${ext}`,{type:b.type||'image/jpeg'});
+        card.querySelector('[data-a="salvar"]').disabled=false;
+      }).catch(()=>{ card.querySelector('[data-a="salvar"]').disabled=false; });
+    };
+    img.onerror=tentar;
+    img.src=url;
+  };
+  tentar();
+}
+
+function ligar(card,p){
+  const id=p.data;
+  card.querySelector('[data-a="salvar"]').addEventListener('click',()=>salvar(p));
+  const cp=card.querySelector('[data-a="copiar"]');
+  if(cp) cp.addEventListener('click',()=>copiar(p.legenda));
+  const mais=card.querySelector('.mais');
+  if(mais) mais.addEventListener('click',()=>{ const l=card.querySelector('.legenda'); l.classList.toggle('aberta'); mais.textContent=l.classList.contains('aberta')?'Recolher':'Ver legenda inteira'; });
+  card.querySelector('.check input').addEventListener('change',e=>{
+    if(e.target.checked) feitos[id]=true; else delete feitos[id];
+    store.set('natal-feitos',feitos);
+    card.classList.toggle('feito',e.target.checked);
+    atualizarProgresso(); aplicarFiltro();
+    if(e.target.checked) toast('Marcado como postado ✓');
+  });
+}
+
+async function salvar(p){
+  const files=arquivos[p.data].filter(Boolean);
+  if(!files.length){ toast('Ainda não tem arte pronta aqui'); return; }
+  if(navigator.canShare && navigator.canShare({files})){
+    try{ await navigator.share({files}); }catch(e){ /* cancelado */ }
+    return;
+  }
+  // computador / navegador sem compartilhamento: baixa um por um
+  files.forEach((f,i)=>setTimeout(()=>{
+    const a=document.createElement('a'); a.href=URL.createObjectURL(f); a.download=f.name;
+    document.body.appendChild(a); a.click(); a.remove();
+  },i*350));
+  toast(files.length>1?`Baixando ${files.length} artes…`:'Baixando arte…');
+}
+
+async function copiar(txt){
+  try{ await navigator.clipboard.writeText(txt); }
+  catch(e){
+    const t=document.createElement('textarea'); t.value=txt; t.setAttribute('readonly','');
+    t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t);
+    t.select(); t.setSelectionRange(0,txt.length); document.execCommand('copy'); t.remove();
+  }
+  toast('Legenda copiada! É só colar no Instagram');
+}
+
+let filtro='todos';
+function aplicarFiltro(){
+  document.querySelectorAll('.card').forEach(c=>{
+    const id=c.id.slice(2); const t=c.dataset.tipo;
+    let ok = filtro==='todos' || (filtro==='pendentes'&&!feitos[id]) || (filtro==='feed'&&(t==='carrossel'||t==='post')) || filtro===t;
+    c.style.display=ok?'':'none';
+  });
+  document.querySelectorAll('.mes').forEach(h=>{
+    let el=h.nextElementSibling, vis=false;
+    while(el && !el.classList.contains('mes')){ if(el.style.display!=='none') vis=true; el=el.nextElementSibling; }
+    h.style.display=vis?'':'none';
+  });
+}
+document.getElementById('filtros').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b) return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));
+  filtro=b.dataset.f; aplicarFiltro();
+});
+
+function atualizarProgresso(){
+  const n=POSTS.filter(p=>feitos[p.data]).length;
+  document.getElementById('contador').textContent=`${n} de ${POSTS.length} postados`;
+  document.getElementById('barra').style.width=(n/POSTS.length*100)+'%';
+}
+
+render();
+// rola até a próxima publicação
+const alvo=document.querySelector('.card.hoje');
+if(alvo && alvo!==document.querySelector('.card')) setTimeout(()=>alvo.scrollIntoView({behavior:'smooth',block:'start'}),300);
+</script>
+</body>
+</html>
