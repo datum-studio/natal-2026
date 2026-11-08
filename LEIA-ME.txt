@@ -15,3 +15,16 @@ CALENDÁRIO NATAL COM AFETO, COMO ATUALIZAR
 
 Dias da campanha: 09/11, 10/11, 12/11, 14/11, 17/11, 19/11, 22/11, 25/11, 28/11,
 01/12, 04/12, 07/12, 10/12, 13/12, 16/12, 18/12, 20/12.
+
+BANCO DE FOTOS E VÍDEOS (aba "📁 Banco")
+   Para fotos e vídeos fora do calendário, use a pasta "extras/". Qualquer nome serve:
+     bolo-mesa-posta.jpg   bastidores-forno.mp4   logo-fundo-bordo.png
+   Para ter legenda pronta, crie um .txt com o MESMO nome:
+     bolo-mesa-posta.jpg  +  bolo-mesa-posta.txt
+   Aceita jpg, png, webp, gif, mp4, mov e webm.
+
+POSTADOS
+   Quando ela marca "Já postei", o card vira uma faixa compacta (toque para abrir de novo).
+   O botão "Próximo a postar", no canto da tela, leva ao primeiro post que ainda falta.
+   Datas que já passaram sem postagem aparecem como "Atrasado".
+   As marcações ficam salvas só no celular de quem marcou.

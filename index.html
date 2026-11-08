@@ -30,8 +30,40 @@
   main{max-width:560px;margin:0 auto;padding:16px 14px 80px}
   .mes{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--bordo);margin:22px 4px 10px}
   .card{scroll-margin-top:64px;background:var(--branco);border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 3px rgba(84,37,54,.08)}
-  .card.feito{opacity:.55}
   .card.hoje{outline:2px solid var(--dourado)}
+  /* postados: viram uma faixa compacta; toque para abrir */
+  .card.feito{background:#EFE6D8;box-shadow:none}
+  .card.feito:not(.aberto) .artes,.card.feito:not(.aberto) .legenda,.card.feito:not(.aberto) .mais,
+  .card.feito:not(.aberto) details,.card.feito:not(.aberto) .semleg,.card.feito:not(.aberto) .acoes .btn{display:none}
+  .card.feito:not(.aberto) .topo{padding:10px 16px 0;cursor:pointer}
+  .card.feito:not(.aberto) .data b{font-size:24px}
+  .card.feito:not(.aberto) .papel{font-size:16px}
+  .card.feito:not(.aberto) .det{display:none}
+  .card.feito:not(.aberto) .acoes{padding:2px 16px 8px}
+  .card.feito:not(.aberto) .check{justify-content:flex-start;padding:4px 0 0 66px}
+  .ok{display:none;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5d7a4e;margin-left:6px}
+  .card.feito .ok{display:inline}
+  .flag.atraso{color:var(--bordo)}
+  .fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:6;background:var(--vinho);color:var(--off);border:0;border-radius:999px;padding:12px 18px;font:600 13px var(--sans);box-shadow:0 4px 14px rgba(84,37,54,.3);display:none}
+  .fab.on{display:block}
+  /* banco de fotos e vídeos */
+  #banco{display:none;max-width:560px;margin:0 auto;padding:16px 14px 90px}
+  body.ver-banco #banco{display:block}
+  body.ver-banco #lista,body.ver-banco .prazo{display:none}
+  .banco-intro{font-size:13px;color:var(--suave);margin:4px 4px 14px}
+  .grade{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .item{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#e9dfd0;border:0;padding:0}
+  .item img,.item video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  .item .selo{position:absolute;bottom:6px;left:6px;background:rgba(84,37,54,.75);color:#fff;font:600 11px var(--sans);padding:2px 7px;border-radius:999px}
+  .item .nome{position:absolute;top:6px;right:6px;background:rgba(246,240,231,.9);color:var(--vinho);font:500 10px var(--sans);padding:2px 6px;border-radius:4px;max-width:85%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .vazio-banco{grid-column:1/-1;text-align:center;padding:40px 16px;border:1.5px dashed var(--bege);border-radius:12px;color:var(--suave);font-size:13px}
+  .visor{position:fixed;inset:0;z-index:20;background:rgba(30,14,22,.92);display:none;flex-direction:column;padding:calc(14px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom))}
+  .visor.on{display:flex}
+  .visor .midia{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+  .visor .midia img,.visor .midia video{max-width:100%;max-height:100%;border-radius:10px}
+  .visor .leg{max-height:22vh;overflow:auto;background:var(--off);color:var(--texto);border-radius:10px;padding:10px 12px;font-size:13px;white-space:pre-wrap;margin-top:10px}
+  .visor .acoes{padding:12px 0 0}
+  .visor .fechar{position:absolute;top:calc(10px + env(safe-area-inset-top));right:12px;background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:999px;width:38px;height:38px;font-size:18px;z-index:2}
   .topo{display:flex;gap:14px;align-items:center;padding:16px 16px 10px}
   .data{text-align:center;min-width:52px}
   .data b{display:block;font-family:var(--serif);font-size:34px;line-height:1;color:var(--bordo)}
@@ -68,7 +100,7 @@
   .btn:disabled{opacity:.4}
   .check{flex:1 1 100%;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--suave);padding:6px 0 0}
   .check input{width:20px;height:20px;accent-color:var(--bordo)}
-  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,40px);opacity:0;background:var(--vinho);color:var(--off);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:500;transition:.25s;pointer-events:none;z-index:9}
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,40px);opacity:0;background:var(--vinho);color:var(--off);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:500;transition:.25s;pointer-events:none;z-index:9;white-space:nowrap}
   .toast.on{transform:translate(-50%,0);opacity:1}
   .prazo{text-align:center;font-size:11px;color:var(--suave);padding:0 20px 8px}
   footer{max-width:560px;margin:0 auto;padding:20px 20px calc(28px + env(safe-area-inset-bottom));font-family:'Geist',system-ui,sans-serif;border-top:1px solid #e6dccd}
@@ -87,8 +119,24 @@
   <button class="chip" data-f="feed">Feed</button>
   <button class="chip" data-f="stories">Stories</button>
   <button class="chip" data-f="reel">Reels</button>
+  <button class="chip" data-f="banco">📁 Banco</button>
 </nav>
 <main id="lista"></main>
+<section id="banco">
+  <h2 class="mes" style="margin-top:6px">Banco de fotos e vídeos</h2>
+  <p class="banco-intro">Imagens e vídeos extras, fora do calendário, para usar quando precisar. Toque para ver, salvar ou copiar a legenda.</p>
+  <div class="grade" id="grade"><div class="vazio-banco">Carregando…</div></div>
+</section>
+<button class="fab" id="fab">↓ Próximo a postar</button>
+<div class="visor" id="visor">
+  <button class="fechar" id="vFechar" aria-label="Fechar">✕</button>
+  <div class="midia" id="vMidia"></div>
+  <div class="leg" id="vLeg" hidden></div>
+  <div class="acoes">
+    <button class="btn pri" id="vSalvar">⬇ Salvar / Compartilhar</button>
+    <button class="btn sec" id="vCopiar" hidden>📋 Copiar legenda</button>
+  </div>
+</div>
 <div class="prazo">Encomendas até 20/12/2026 · 12h</div>
 <footer>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:12px;">
@@ -128,7 +176,7 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 function render(){
   const lista=document.getElementById('lista'); lista.innerHTML='';
   const hoje=hojeISO();
-  const proximo=(POSTS.find(p=>p.data>=hoje)||{}).data;
+
   let mesAtual='';
   POSTS.forEach((p,idx)=>{
     const id=p.data;
@@ -137,10 +185,10 @@ function render(){
     if(mes!==mesAtual){ mesAtual=mes; const h=document.createElement('h2'); h.className='mes'; h.textContent=mes[0].toUpperCase()+mes.slice(1); h.dataset.mes=mes; lista.appendChild(h); }
     const vertical = p.tipo==='stories';
     const card=document.createElement('article');
-    card.className='card'+(feitos[id]?' feito':'')+(id===proximo?' hoje':'');
+    card.className='card'+(feitos[id]?' feito':'');
     card.id='p-'+id;
     card.dataset.tipo=p.tipo;
-    const flag = id===hoje ? '<span class="flag">● Hoje</span>' : (id===proximo ? '<span class="flag">● Próximo</span>' : '');
+    const flag = '<span class="flag"></span><span class="ok">✓ Postado</span>';
     let pecas='';
     for(let i=1;i<=p.pecas;i++){
       pecas+=`<div class="peca${vertical?' v':''}" data-i="${i}"><div class="ratio"></div>
@@ -173,7 +221,7 @@ function render(){
     card.querySelectorAll('.peca').forEach(el=>carregarPeca(p,el,card));
     ligar(card,p);
   });
-  aplicarFiltro(); atualizarProgresso();
+  aplicarFiltro(); atualizarProgresso(); atualizarProximo();
 }
 
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -204,6 +252,7 @@ function carregarPeca(p,el,card){
 
 function ligar(card,p){
   const id=p.data;
+  card.querySelector('.topo').addEventListener('click',()=>{ if(card.classList.contains('feito')) card.classList.toggle('aberto'); });
   card.querySelector('[data-a="salvar"]').addEventListener('click',()=>salvar(p));
   const cp=card.querySelector('[data-a="copiar"]');
   if(cp) cp.addEventListener('click',()=>copiar(p.legenda));
@@ -212,8 +261,8 @@ function ligar(card,p){
   card.querySelector('.check input').addEventListener('change',e=>{
     if(e.target.checked) feitos[id]=true; else delete feitos[id];
     store.set('natal-feitos',feitos);
-    card.classList.toggle('feito',e.target.checked);
-    atualizarProgresso(); aplicarFiltro();
+    card.classList.toggle('feito',e.target.checked); card.classList.remove('aberto');
+    atualizarProgresso(); aplicarFiltro(); atualizarProximo();
     if(e.target.checked) toast('Marcado como postado ✓');
   });
 }
@@ -259,7 +308,9 @@ function aplicarFiltro(){
 document.getElementById('filtros').addEventListener('click',e=>{
   const b=e.target.closest('.chip'); if(!b) return;
   document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b));
-  filtro=b.dataset.f; aplicarFiltro();
+  if(b.dataset.f==='banco'){ document.body.classList.add('ver-banco'); carregarBanco(); window.scrollTo(0,0); atualizarFab(); return; }
+  document.body.classList.remove('ver-banco');
+  filtro=b.dataset.f; aplicarFiltro(); atualizarFab();
 });
 
 function atualizarProgresso(){
@@ -271,8 +322,127 @@ function atualizarProgresso(){
 render();
 document.getElementById('footer-ano').textContent = new Date().getFullYear();
 // rola até a próxima publicação
-const alvo=document.querySelector('.card.hoje');
+function proximoCard(){ return document.querySelector('.card.hoje'); }
+function atualizarProximo(){
+  const hoje=hojeISO();
+  const prox=(POSTS.find(p=>!feitos[p.data])||{}).data;
+  POSTS.forEach(p=>{
+    const c=document.getElementById('p-'+p.data); if(!c) return;
+    const f=c.querySelector('.flag');
+    c.classList.toggle('hoje',p.data===prox);
+    let t='',cls='flag';
+    if(!feitos[p.data]){
+      if(p.data===hoje) t='● Hoje';
+      else if(p.data<hoje){ t='● Atrasado'; cls+=' atraso'; }
+      else if(p.data===prox) t='● Próximo';
+    }
+    f.textContent=t; f.className=cls;
+  });
+  atualizarFab();
+}
+function atualizarFab(){
+  const fab=document.getElementById('fab');
+  const c=proximoCard();
+  if(!c || document.body.classList.contains('ver-banco') || c.style.display==='none'){ fab.classList.remove('on'); return; }
+  const r=c.getBoundingClientRect();
+  const longe = r.top>window.innerHeight || r.bottom<0;
+  fab.textContent = r.top>window.innerHeight ? '↓ Próximo a postar' : '↑ Próximo a postar';
+  fab.classList.toggle('on',longe);
+}
+document.getElementById('fab').addEventListener('click',()=>{ const c=proximoCard(); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); });
+window.addEventListener('scroll',atualizarFab,{passive:true});
+const alvo=proximoCard();
 if(alvo && alvo!==document.querySelector('.card')) setTimeout(()=>alvo.scrollIntoView({behavior:'smooth',block:'start'}),300);
+
+/* ================= BANCO DE FOTOS E VÍDEOS =================
+   Pasta "extras/" no repositório. Qualquer nome de arquivo serve.
+   Legenda opcional: um .txt com o mesmo nome (ex.: bolo.jpg + bolo.txt). */
+const PASTA='extras';
+const IMG=/\.(jpe?g|png|webp|gif)$/i, VID=/\.(mp4|mov|webm|m4v)$/i;
+let bancoCarregado=false;
+async function listarArquivos(){
+  // 1) GitHub Pages: lista a pasta pela API pública do GitHub (aceita qualquer nome)
+  if(location.hostname.endsWith('github.io')){
+    const dono=location.hostname.split('.')[0];
+    const repo=location.pathname.split('/').filter(Boolean)[0];
+    try{
+      const r=await fetch(`https://api.github.com/repos/${dono}/${repo}/contents/${PASTA}?t=${Date.now()}`);
+      if(r.ok){ const j=await r.json(); return j.filter(f=>f.type==='file').map(f=>f.name); }
+      if(r.status===404) return [];
+    }catch(e){}
+  }
+  // 2) Plano B: arquivos numerados 1.jpg, 2.mp4, 3.png...
+  const achados=[]; let falhas=0;
+  for(let n=1;n<=300&&falhas<3;n++){
+    let ok=false;
+    for(const ext of ['jpg','jpeg','png','webp','mp4','mov']){
+      try{ const r=await fetch(`${PASTA}/${n}.${ext}`,{method:'HEAD'}); if(r.ok){ achados.push(`${n}.${ext}`); ok=true; break; } }catch(e){}
+    }
+    if(ok){ falhas=0; try{ const t=await fetch(`${PASTA}/${n}.txt`,{method:'HEAD'}); if(t.ok) achados.push(n+'.txt'); }catch(e){} }
+    else falhas++;
+  }
+  return achados;
+}
+async function carregarBanco(forcar){
+  if(bancoCarregado && !forcar) return;
+  bancoCarregado=true;
+  const grade=document.getElementById('grade');
+  const nomes=await listarArquivos();
+  const base=n=>n.replace(/\.[^.]+$/,'');
+  const textos=new Set(nomes.filter(n=>/\.txt$/i.test(n)).map(base));
+  const midias=nomes.filter(n=>IMG.test(n)||VID.test(n))
+    .sort((a,b)=>a.localeCompare(b,'pt',{numeric:true}));
+  if(!midias.length){
+    grade.innerHTML='<div class="vazio-banco">Nada por aqui ainda.<br>Coloque fotos e vídeos na pasta <b>extras/</b> do repositório.</div>';
+    return;
+  }
+  grade.innerHTML='';
+  midias.forEach(nome=>{
+    const url=`${PASTA}/${encodeURIComponent(nome)}`;
+    const video=VID.test(nome);
+    const leg=textos.has(base(nome)) ? `${PASTA}/${encodeURIComponent(base(nome))}.txt` : null;
+    const el=document.createElement('button'); el.className='item';
+    el.innerHTML=(video?`<video src="${url}#t=0.5" muted playsinline preload="metadata"></video>`:`<img src="${url}" loading="lazy" alt="">`)
+      +`<span class="nome">${esc(base(nome))}</span>`
+      +((video||leg)?`<span class="selo">${video?'▶ vídeo':''}${video&&leg?' · ':''}${leg?'📝 legenda':''}</span>`:'');
+    el.addEventListener('click',()=>abrirVisor({nome,url,video,leg}));
+    grade.appendChild(el);
+  });
+}
+
+let visorAtual=null;
+const vis=document.getElementById('visor');
+async function abrirVisor(it){
+  visorAtual={...it,file:null,texto:null};
+  const m=document.getElementById('vMidia');
+  m.innerHTML=it.video?`<video src="${it.url}" controls playsinline autoplay muted></video>`:`<img src="${it.url}" alt="">`;
+  const vl=document.getElementById('vLeg'), vc=document.getElementById('vCopiar'), vs=document.getElementById('vSalvar');
+  vl.hidden=true; vc.hidden=true;
+  vs.disabled=true; vs.textContent='Preparando…';
+  vis.classList.add('on'); document.body.style.overflow='hidden';
+  const atual=visorAtual;
+  if(it.leg){
+    fetch(it.leg).then(r=>r.text()).then(t=>{ if(visorAtual!==atual) return; atual.texto=t.trim(); vl.textContent=atual.texto; vl.hidden=false; vc.hidden=false; });
+  }
+  // baixa o arquivo antes, para o botão compartilhar abrir na hora (exigência do iPhone)
+  try{
+    const b=await (await fetch(it.url)).blob();
+    if(visorAtual!==atual) return;
+    atual.file=new File([b],it.nome,{type:b.type||(it.video?'video/mp4':'image/jpeg')});
+  }catch(e){}
+  vs.disabled=false; vs.textContent='⬇ Salvar / Compartilhar';
+}
+function fecharVisor(){ vis.classList.remove('on'); document.getElementById('vMidia').innerHTML=''; document.body.style.overflow=''; visorAtual=null; }
+document.getElementById('vFechar').addEventListener('click',fecharVisor);
+document.getElementById('vCopiar').addEventListener('click',()=>{ if(visorAtual&&visorAtual.texto) copiar(visorAtual.texto); });
+document.getElementById('vSalvar').addEventListener('click',async()=>{
+  const it=visorAtual; if(!it) return;
+  if(it.file && navigator.canShare && navigator.canShare({files:[it.file]})){
+    try{ await navigator.share({files:[it.file]}); }catch(e){} return;
+  }
+  const a=document.createElement('a'); a.href=it.file?URL.createObjectURL(it.file):it.url; a.download=it.nome;
+  document.body.appendChild(a); a.click(); a.remove(); toast('Baixando…');
+});
 </script>
 </body>
 </html>
